@@ -20,7 +20,8 @@ class MyFlask(Flask):
                                  debug=debug, load_dotenv=load_dotenv, **kwargs)
 
 
-app = MyFlask(__name__)
+application = MyFlask(__name__)
+app = application
 model = None
 
 defined_class = ['A', 'B', 'D', 'Ehi', 'Elo', 'G']
