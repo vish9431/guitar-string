@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
-import tensorflow as tf
 import librosa
 import numpy as np
+import pickle
 
 MAX_NUM_FRAMES = 173
 SAMPLE_RATE = 44100
@@ -14,14 +14,14 @@ class MyFlask(Flask):
         if not self.debug or os.getenv('WERKZEUG_RUN_PATH') == 'true':
             with self.app_context():
                 global model 
-                model = tf.keras.models.load_model('model.keras')
+                with open('abc.pkl', 'wb') as file:
+                    model = pickle.load(file)
                 
         super(MyFlask, self).run(host=host, port=port,
                                  debug=debug, load_dotenv=load_dotenv, **kwargs)
 
 
-application = MyFlask(__name__)
-app = application
+app = MyFlask(__name__)
 model = None
 
 defined_class = ['A', 'B', 'D', 'Ehi', 'Elo', 'G']
