@@ -1,0 +1,6 @@
+<form action="{{ url_for('predict') }}" method='post' id='predict' enctype='multipart/form-data'>
+    <label for="file-upload" class="upload-label" required>Choose File</label>
+    <input type="file" id ='file-upload' name='audioPart' required>
+    <img src="" id="photo-preview" alt="Uploaded Photo">
+    <button id='submit-button' type="submit" value ="Upload">Upload Photo</button>
+</form>
