@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import librosa
 import numpy as np
-import pickle
+import onnxruntime as ort
 
 MAX_NUM_FRAMES = 173
 SAMPLE_RATE = 44100
@@ -13,16 +13,15 @@ class MyFlask(Flask):
     def run(self, host=None, port=None, debug=None, load_dotenv=None, **kwargs):
         if not self.debug or os.getenv('WERKZEUG_RUN_PATH') == 'true':
             with self.app_context():
-                global model 
-                with open('abc.pkl', 'wb') as file:
-                    model = pickle.load(file)
+                global model
                 
         super(MyFlask, self).run(host=host, port=port,
                                  debug=debug, load_dotenv=load_dotenv, **kwargs)
 
 
 app = MyFlask(__name__)
-model = None
+model = ort.InferenceSession('model.onnx', providers=['AzureExecutionProvider', 'CPUExecutionProvider'])
+
 
 defined_class = ['A', 'B', 'D', 'Ehi', 'Elo', 'G']
 
@@ -53,7 +52,7 @@ def predict():
         
         convert('raw.mp3')
         data = process('raw.wav')
-        prediction = model.predict(data)
+        prediction = model.run(None, {'x': data})
         prediction = defined_class[np.argmax(prediction)]
         
         return prediction
